@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+int delete_digit_and_get_largest(int num) {
+    int max_num = 0;
+
+    // Extract individual digits from the number
+    int thousands = num / 1000;
+    int hundreds = (num / 100) % 10;
+    int tens = (num / 10) % 10;
+    int ones = num % 10;
+
+    // Compare all the possible combinations by removing a single digit
+    if ((hundreds * 100 + tens * 10 + ones) > max_num) {
+        max_num = hundreds * 100 + tens * 10 + ones;
+    }
+    if ((thousands * 100 + tens * 10 + ones) > max_num) {
+        max_num = thousands * 100 + tens * 10 + ones;
+    }
+    if ((thousands * 100 + hundreds * 10 + ones) > max_num) {
+        max_num = thousands * 100 + hundreds * 10 + ones;
+    }
+    if ((thousands * 100 + hundreds * 10 + tens) > max_num) {
+        max_num = thousands * 100 + hundreds * 10 + tens;
+    }
+
+    return max_num;
+}
+
+int main() {
+    int num;
+
+    printf("Enter a 4-digit number: ");
+    scanf("%d", &num);
+
+    int largest_num = delete_digit_and_get_largest(num);
+
+    printf("Largest number by deleting a single digit: %d\n", largest_num);
+
+    return 0;
+}
