@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+void printExponent(double x) {
+    unsigned char *ptr = (unsigned char*)&x;
+
+    // Extracting the exponent part from the double variable
+    unsigned char exponent = (ptr[7] & 0x7F) << 4;
+    exponent |= (ptr[6] & 0xF0) >> 4;
+
+    // Printing the exponent in hexadecimal format
+    printf("Exponent (Hex): 0x%X\n", exponent);
+
+    // Printing the exponent in binary format
+    printf("Exponent (Binary): 0b");
+    for (int i = 7; i >= 6; i--) {
+        for (int j = 7; j >= 0; j--) {
+            printf("%d", (ptr[i] >> j) & 1);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    double x = 0.7;
+    printExponent(x);
+    return 0;
+}

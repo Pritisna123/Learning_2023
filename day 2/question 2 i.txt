@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+// Generic swap function using pointers
+void swap(void *a, void *b, size_t size) {
+    char *ptr_a = (char *)a;
+    char *ptr_b = (char *)b;
+    char temp;
+
+    for (size_t i = 0; i < size; i++) {
+        temp = *(ptr_a + i);
+        *(ptr_a + i) = *(ptr_b + i);
+        *(ptr_b + i) = temp;
+    }
+}
+
+int main() {
+    int num1 = 10;
+    int num2 = 20;
+
+    printf("Before swap: num1 = %d, num2 = %d\n", num1, num2);
+
+    // Swapping integers
+    swap(&num1, &num2, sizeof(int));
+
+    printf("After swap: num1 = %d, num2 = %d\n", num1, num2);
+
+    float float1 = 3.14;
+    float float2 = 2.71;
+
+    printf("Before swap: float1 = %.2f, float2 = %.2f\n", float1, float2);
+
+    // Swapping floats
+    swap(&float1, &float2, sizeof(float));
+
+    printf("After swap: float1 = %.2f, float2 = %.2f\n", float1, float2);
+
+    return 0;
+}
+

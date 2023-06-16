@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+// Function to count the number of set bits in an integer
+int countSetBits(int num) {
+    int count = 0;
+
+    while (num != 0) {
+        count += num & 1;
+        num >>= 1;
+    }
+
+    return count;
+}
+
+int main() {
+    int arr[] = {0x1, 0xF4, 0x10001};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int totalSetBits = 0;
+
+    // Calculate total set bits in the array
+    for (int i = 0; i < size; i++) {
+        int currentNum = arr[i];
+
+        // Count set bits in the current element
+        int setBits = 0;
+
+        while (currentNum != 0) {
+            setBits += currentNum & 1;
+            currentNum >>= 1;
+        }
+
+        // Accumulate the count
+        totalSetBits += setBits;
+    }
+
+    printf("Total number of set bits: %d\n", totalSetBits);
+
+    return 0;
+}
