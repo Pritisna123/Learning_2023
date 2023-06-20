@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+// Define the structure for the box
+struct Box {
+    double length;
+    double width;
+    double height;
+};
+
+// Function to calculate the volume of the box
+double calculateVolume(struct Box* box) {
+    return box->length * box->width * box->height;
+}
+
+// Function to calculate the total surface area of the box
+double calculateSurfaceArea(struct Box* box) {
+    double length = box->length;
+    double width = box->width;
+    double height = box->height;
+    
+    return 2 * (length * width + length * height + width * height);
+}
+
+int main() {
+    // Create a box object and initialize its members
+    struct Box myBox;
+    myBox.length = 2.5;
+    myBox.width = 3.0;
+    myBox.height = 4.0;
+
+    // Create a pointer to the box structure
+    struct Box* boxPtr = &myBox;
+
+    // Calculate the volume and total surface area using the structure pointer
+    double volume = calculateVolume(boxPtr);
+    double surfaceArea = calculateSurfaceArea(boxPtr);
+
+    // Print the results
+    printf("Volume of the box: %.2f\n", volume);
+    printf("Total surface area of the box: %.2f\n", surfaceArea);
+
+    return 0;
+}

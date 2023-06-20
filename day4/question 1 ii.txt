@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+// Define the structure for the box
+struct Box {
+    double length;
+    double width;
+    double height;
+};
+
+// Function to calculate the volume of the box using arrow operator (->)
+double calculateVolumeArrow(struct Box* boxPtr) {
+    return boxPtr->length * boxPtr->width * boxPtr->height;
+}
+
+// Function to calculate the total surface area of the box using arrow operator (->)
+double calculateSurfaceAreaArrow(struct Box* boxPtr) {
+    return 2 * (boxPtr->length * boxPtr->width + boxPtr->length * boxPtr->height + boxPtr->width * boxPtr->height);
+}
+
+// Function to calculate the volume of the box using dot representation (.)
+double calculateVolumeDot(struct Box* boxPtr) {
+    return (*boxPtr).length * (*boxPtr).width * (*boxPtr).height;
+}
+
+// Function to calculate the total surface area of the box using dot representation (.)
+double calculateSurfaceAreaDot(struct Box* boxPtr) {
+    return 2 * ((*boxPtr).length * (*boxPtr).width + (*boxPtr).length * (*boxPtr).height + (*boxPtr).width * (*boxPtr).height);
+}
+
+int main() {
+    // Create a box object and initialize its members
+    struct Box myBox;
+    myBox.length = 2.5;
+    myBox.width = 3.0;
+    myBox.height = 4.0;
+
+    // Create a pointer to the box structure
+    struct Box* boxPtr = &myBox;
+
+    // Calculate the volume and total surface area using arrow operator (->)
+    double volumeArrow = calculateVolumeArrow(boxPtr);
+    double surfaceAreaArrow = calculateSurfaceAreaArrow(boxPtr);
+
+    // Calculate the volume and total surface area using dot representation (.)
+    double volumeDot = calculateVolumeDot(boxPtr);
+    double surfaceAreaDot = calculateSurfaceAreaDot(boxPtr);
+
+    // Print the results
+    printf("Volume of the box (Arrow operator): %.2f\n", volumeArrow);
+    printf("Total surface area of the box (Arrow operator): %.2f\n", surfaceAreaArrow);
+    printf("Volume of the box (Dot representation): %.2f\n", volumeDot);
+    printf("Total surface area of the box (Dot representation): %.2f\n", surfaceAreaDot);
+
+    return 0;
+}
