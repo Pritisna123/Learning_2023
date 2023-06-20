@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Student {
+    int rollno;
+    char name[20];
+    float marks;
+};
+
+// Function to parse the string and initialize an array of structures
+void initializeStudentArray(const char* inputString, struct Student* students, int size) {
+    char temp[20];
+    int i = 0;
+
+    while (*inputString != '\0') {
+        // Extract roll number
+        sscanf(inputString, "%d", &students[i].rollno);
+
+        // Move to the next space character
+        inputString = strchr(inputString, ' ') + 1;
+
+        // Extract name
+        sscanf(inputString, "%s", temp);
+        strcpy(students[i].name, temp);
+
+        // Move to the next space character
+        inputString = strchr(inputString, ' ') + 1;
+
+        // Extract marks
+        sscanf(inputString, "%f", &students[i].marks);
+
+        // Move to the next space character
+        inputString = strchr(inputString, ' ') + 1;
+
+        i++;
+
+        // Break the loop if the required number of structures have been initialized
+        if (i == size) {
+            break;
+        }
+    }
+}
+
+int main() {
+    // Example string
+    const char* inputString = "1001 Aron 100.00";
+
+    // Example array of structures
+    struct Student students[1];
+
+    // Parse the string and initialize the array of structures
+    initializeStudentArray(inputString, students, 1);
+
+    // Print the initialized structure
+    printf("Roll No: %d\n", students[0].rollno);
+    printf("Name: %s\n", students[0].name);
+    printf("Marks: %.2f\n", students[0].marks);
+
+    return 0;
+}

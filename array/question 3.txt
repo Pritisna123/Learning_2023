@@ -1,0 +1,34 @@
+#include <stdio.h>
+
+struct Student {
+    int rollno;
+    char name[20];
+    float marks;
+};
+
+// Function to display all members of an array of structures
+void displayStudentArray(const struct Student* students, int size) {
+    int i;
+
+    for (i = 0; i < size; i++) {
+        printf("Student %d:\n", i + 1);
+        printf("Roll No: %d\n", students[i].rollno);
+        printf("Name: %s\n", students[i].name);
+        printf("Marks: %.2f\n", students[i].marks);
+        printf("\n");
+    }
+}
+
+int main() {
+    // Example array of structures
+    struct Student students[3] = {
+        {1001, "Aron", 100.00},
+        {1002, "Bob", 90.50},
+        {1003, "Charlie", 85.25}
+    };
+
+    // Display all members of the array of structures
+    displayStudentArray(students, 3);
+
+    return 0;
+}

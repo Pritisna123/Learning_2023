@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+struct Student {
+    int rollno;
+    char name[20];
+    float marks;
+};
+
+// Function to initialize all members of an array of structures
+void initializeStudentArray(struct Student* students, int size) {
+    int i;
+
+    for (i = 0; i < size; i++) {
+        students[i].rollno = 0;
+        students[i].name[0] = '\0';
+        students[i].marks = 0.0;
+    }
+}
+
+int main() {
+    // Example array of structures
+    struct Student students[3];
+
+    // Initialize all members of the array of structures
+    initializeStudentArray(students, 3);
+
+    // Print the initialized structures
+    int i;
+    for (i = 0; i < 3; i++) {
+        printf("Student %d:\n", i + 1);
+        printf("Roll No: %d\n", students[i].rollno);
+        printf("Name: %s\n", students[i].name);
+        printf("Marks: %.2f\n", students[i].marks);
+        printf("\n");
+    }
+
+    return 0;
+}
