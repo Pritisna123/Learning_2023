@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_ENTRIES 100
+#define MAX_LINE_LENGTH 100
+
+struct LogEntry {
+    int entryNo;
+    char sensorNo[10];
+    float temperature;
+    int humidity;
+    int light;
+    char timestamp[10];
+};
+
+void extractData(const char* filename, struct LogEntry* entries, int* numEntries);
+void printData(const struct LogEntry* entries, int numEntries);
+
+int main() {
+    struct LogEntry entries[MAX_ENTRIES];
+    int numEntries = 0;
+
+    extractData("data.csv", entries, &numEntries);
+    printData(entries, numEntries);
+
+    return 0;
+}
+
+void extractData(const char* filename, struct LogEntry* entries, int* numEntries) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Failed to open the file.\n");
+        exit(1);
+    }
+
+    char line[MAX_LINE_LENGTH];
+    int lineNum = 0;
+
+    while (fgets(line, MAX_LINE_LENGTH, file) != NULL) {
+        lineNum++;
+        if (lineNum == 1) {
+            // Skip the header line
+            continue;
+        }
+
+        struct LogEntry entry;
+        char* token;
+
+        token = strtok(line, ",");
+        entry.entryNo = atoi(token);
+
+        token = strtok(NULL, ",");
+        strcpy(entry.sensorNo, token);
+
+        token = strtok(NULL, ",");
+        entry.temperature = atof(token);
+
+        token = strtok(NULL, ",");
+        entry.humidity = atoi(token);
+
+        token = strtok(NULL, ",");
+        entry.light = atoi(token);
+
+        token = strtok(NULL, ",");
+        strcpy(entry.timestamp, token);
+
+        entries[(*numEntries)++] = entry;
+
+        if (*numEntries >= MAX_ENTRIES) {
+            printf("Maximum number of entries reached. Exiting extraction.\n");
+            break;
+        }
+    }
+
+    fclose(file);
+}
+
+void printData(const struct LogEntry* entries, int numEntries) {
+    printf("EntryNo\tSensorNo\tTemperature\tHumidity\tLight\tTimestamp\n");
+    printf("------------------------------------------------------------\n");
+
+    for (int i = 0; i < numEntries; i++) {
+        const struct LogEntry* entry = &entries[i];
+        printf("%d\t%s\t\t%.1f\t\t%d\t\t%d\t%s\n",
+               entry->entryNo, entry->sensorNo, entry->temperature, entry->humidity, entry->light, entry->timestamp);
+    }
+}

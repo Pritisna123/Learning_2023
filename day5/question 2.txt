@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define BUFFER_SIZE 1024
+
+void copyFile(FILE *sourceFile, FILE *targetFile);
+void convertToUpper(FILE *file);
+void convertToLower(FILE *file);
+void convertToSentenceCase(FILE *file);
+
+int main(int argc, char *argv[]) {
+    FILE *sourceFile, *targetFile;
+    char sourcePath[100], targetPath[100];
+    char buffer[BUFFER_SIZE];
+    size_t bytesRead;
+
+    if (argc < 3) {
+        printf("Usage: %s <source_file> <target_file> [option]\n", argv[0]);
+        return 1;
+    }
+
+    strcpy(sourcePath, argv[1]);
+    strcpy(targetPath, argv[2]);
+
+    sourceFile = fopen(sourcePath, "r");
+    if (sourceFile == NULL) {
+        printf("Failed to open the source file.\n");
+        return 1;
+    }
+
+    targetFile = fopen(targetPath, "w");
+    if (targetFile == NULL) {
+        printf("Failed to open the target file.\n");
+        fclose(sourceFile);
+        return 1;
+    }
+
+    if (argc >= 4) {
+        char option = tolower(argv[3][1]);
+        switch (option) {
+            case 'u':
+                convertToUpper(sourceFile);
+                break;
+            case 'l':
+                convertToLower(sourceFile);
+                break;
+            case 's':
+                convertToSentenceCase(sourceFile);
+                break;
+            default:
+                printf("Invalid option.\n");
+                fclose(sourceFile);
+                fclose(targetFile);
+                return 1;
+        }
+    }
+
+    rewind(sourceFile); // Reset the file pointer to the beginning
+
+    copyFile(sourceFile, targetFile);
+
+    printf("File copied successfully.\n");
+
+    fclose(sourceFile);
+    fclose(targetFile);
+
+    return 0;
+}
+
+void copyFile(FILE *sourceFile, FILE *targetFile) {
+    char buffer[BUFFER_SIZE];
+    size_t bytesRead;
+
+    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, sourceFile)) > 0) {
+        fwrite(buffer, 1, bytesRead, targetFile);
+    }
+}
+
+void convertToUpper(FILE *file) {
+    int c;
+    while ((c = fgetc(file)) != EOF) {
+        fputc(toupper(c), file);
+    }
+}
+
+void convertToLower(FILE *file) {
+    int c;
+    while ((c = fgetc(file)) != EOF) {
+        fputc(tolower(c), file);
+    }
+}
+
+void convertToSentenceCase(FILE *file) {
+    int c;
+    int isFirstChar = 1; // Flag to track the first character of a sentence
+    while ((c = fgetc(file)) != EOF) {
+        if (isFirstChar && isalpha(c)) {
+            fputc(toupper(c), file);
+            isFirstChar = 0;
+        } else {
+            fputc(tolower(c), file);
+            if (c == '.' || c == '?' || c == '!') {
+                isFirstChar = 1;
+            }
+        }
+    }
+}
